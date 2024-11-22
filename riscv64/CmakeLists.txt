@@ -1,0 +1,56 @@
+cmake_minimum_required(VERSION 3.15)
+project(riscv64app LANGUAGES C ASM)
+
+# Set the target architecture (modify for your target)
+set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_PROCESSOR riscv)
+
+# Specify the cross-compilation toolchain
+set(CMAKE_C_COMPILER   "/opt/riscv/bin/riscv64-unknown-elf-gcc")
+set(CMAKE_ASM_COMPILER "/opt/riscv/bin/riscv64-unknown-elf-as")
+
+# Add linker script
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/linker.ld)
+
+# Specify flags for the compiler and linker
+# Specify assembler flags
+# set(CMAKE_ASM_FLAGS "-march=rv64im -mabi=lp64")
+
+# Specify compiler flags
+# set(CMAKE_C_FLAGS "-march=rv64im -mabi=lp64 -Wall -O2")
+# Add the --specs option for C files
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --specs=/opt/picolibc/picolibc.specs")
+
+# Specify linker flags
+set(CMAKE_EXE_LINKER_FLAGS "-T${LINKER_SCRIPT}")
+
+
+set(MAIN_SRC
+    ${CMAKE_SOURCE_DIR}/main.c
+    # ${CMAKE_SOURCE_DIR}/start.s
+)
+
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/drivers/inc)
+include_directories(${CMAKE_SOURCE_DIR}/hal/inc)
+
+# Add subdirectories
+add_subdirectory(drivers)
+add_subdirectory(hal)
+
+# Add the executable target
+add_executable(riscv64app.elf ${MAIN_SRC})
+
+# Link the libraries to your executable
+target_link_libraries(riscv64app.elf hal drivers)
+
+# Optional: Add custom targets for binary/hex outputs
+add_custom_target(riscv64app.bin ALL
+    COMMAND ${CMAKE_OBJCOPY} -O binary riscv64app.elf riscv64app.bin
+    DEPENDS riscv64app.elf
+)
+
+add_custom_target(riscv64app.hex ALL
+    COMMAND ${CMAKE_OBJCOPY} -O ihex riscv64app.elf riscv64app.hex
+    DEPENDS riscv64app.elf
+)

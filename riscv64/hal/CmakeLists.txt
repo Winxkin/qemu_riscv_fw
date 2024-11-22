@@ -1,0 +1,16 @@
+set(HAL_SRC
+    src/hal_gpio.c
+    src/hal_timer.c
+    src/hal_uart.c
+)
+
+set(HAL_INC
+    inc/hal_gpio.h
+    inc/hal_timer.h
+    inc/hal_uart.h
+)
+
+add_library(hal ${HAL_SRC} ${HAL_INC})
+target_include_directories(hal PUBLIC inc)
+target_link_libraries(hal drivers)
+set_target_properties(hal PROPERTIES LINKER_LANGUAGE C)

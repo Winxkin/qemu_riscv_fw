@@ -1,6 +1,6 @@
-#include <stdint.h>
+#include "uart.h"
 
-#define UART_BASE 0x10000000
+#define UART_BASE 0x1000000
 #define UART_TXDATA (UART_BASE + 0x00)
 #define UART_RXDATA (UART_BASE + 0x04)
 

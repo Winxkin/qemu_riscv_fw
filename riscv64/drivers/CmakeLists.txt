@@ -1,0 +1,17 @@
+set(DRIVERS_SRC
+    src/gpio.c
+    src/mmio.c
+    src/timer.c
+    src/uart.c
+)
+
+set(DRIVERS_INC
+    inc/gpio.h
+    inc/mmio.h
+    inc/timer.h
+    inc/uart.h
+)
+
+add_library(drivers ${DRIVERS_SRC} ${DRIVERS_INC})
+target_include_directories(drivers PUBLIC inc)
+set_target_properties(drivers PROPERTIES LINKER_LANGUAGE C)
