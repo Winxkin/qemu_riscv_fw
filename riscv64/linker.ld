@@ -43,11 +43,11 @@ ENTRY(_start)
 MEMORY
 {
 	flash (rx!w) :
-		ORIGIN = DEFINED(__flash) ? __flash : 0x1000,
-		LENGTH = DEFINED(__flash_size) ? __flash_size : 0x10000
+		ORIGIN = DEFINED(__flash) ? __flash : 0x00001000,
+		LENGTH = DEFINED(__flash_size) ? __flash_size : 0x00010000
 	ram (w!rx) :
 		ORIGIN = DEFINED(__ram) ? __ram : 0x80000000,
-		LENGTH = DEFINED(__ram_size) ? __ram_size : 0x8000000
+		LENGTH = DEFINED(__ram_size) ? __ram_size : 0x08000000
 }
 
 PHDRS
